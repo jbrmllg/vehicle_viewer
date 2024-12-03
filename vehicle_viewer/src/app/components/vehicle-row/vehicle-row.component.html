@@ -1,0 +1,11 @@
+<div class="vehicle-row-container">
+    <div *ngIf="vehicle" class="row">
+        <span class="cell">
+            <input type="button" value="Edit"/>
+        </span>
+        <img class="row-image" src="{{vehicle?.picture}}"/>
+        <span *ngFor="let key of vehicleProperties" class="cell">
+            <ng-container *ngIf="vehicle[key]">{{ vehicle[key] }}</ng-container>
+        </span>
+    </div>
+</div>

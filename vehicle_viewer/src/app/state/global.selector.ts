@@ -1,0 +1,1 @@
+export const selectGlobalState = (state: any) => state.globalState;

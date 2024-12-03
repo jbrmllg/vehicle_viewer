@@ -1,0 +1,20 @@
+:host{
+    .header-title {
+        display: flex;
+        float:left;
+        width: 20%;
+    }
+    .header-search-container{
+        display: block;
+        margin:auto;
+        width: 60%;
+        text-align: center;
+
+    }
+    .header-user {
+        display: flex;
+        float: right;
+        width: 20%;
+
+    }
+}

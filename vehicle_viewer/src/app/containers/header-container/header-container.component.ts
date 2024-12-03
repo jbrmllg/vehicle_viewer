@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from "@angular/core";
 import { HeaderComponent } from "../../components/header/header.component";
 
 @Component({
@@ -6,13 +6,20 @@ import { HeaderComponent } from "../../components/header/header.component";
     templateUrl: './header-container.component.html',
     styleUrl: './header-container.component.scss',
     imports: [HeaderComponent],
-    standalone: true
+    standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderContainerComponent {
 
-    constructor () {}
-
-    handleChangeValue(evt: unknown): void {
-        // TODO lanza busqueda de registro
+    @Output() onSearch: EventEmitter<string>;
+    
+    constructor () {
+        this.onSearch = new EventEmitter<string>();
     }
+
+    handleChangeValue(evt: string): void {
+        this.onSearch.emit(evt);
+    }
+
+
 }

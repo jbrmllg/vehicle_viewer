@@ -1,0 +1,26 @@
+.vehicle-row-container {
+    max-width: 100%;
+}
+
+.row-image {
+    width: 10rem;
+    height: 5rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.5rem;
+}
+
+.cell {
+    display: inline-block;
+    padding: 0.5rem;
+    border-radius: 4px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    max-width: 100%; 
+}

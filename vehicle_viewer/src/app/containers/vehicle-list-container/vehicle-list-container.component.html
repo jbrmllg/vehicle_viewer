@@ -1,4 +1,10 @@
-<!-- header -->
-<vv-header-container></vv-header-container>
-<!-- body -->
-<!-- footer-->
+ <!-- header  -->
+<vv-header-container (onSearch)="handleSearch($event)"></vv-header-container>
+ <!-- body  -->
+<ng-container *ngIf="filteredVehicles$ | async as vehicles">
+    <ng-container *ngFor="let vehicle of vehicles">
+        <vv-row
+        [vehicle]="vehicle"
+        ></vv-row> <br/>
+    </ng-container>
+</ng-container>

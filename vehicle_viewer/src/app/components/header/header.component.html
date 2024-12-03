@@ -1,6 +1,11 @@
 <!-- title -->
- VEHICLE VIEWER
+ <!-- <span class="header-title">VEHICLE VIEWER</span> -->
 <!-- search input -->
- <input type="text" class="header-search-input" placeholder="Search by name">
+ <span *ngIf="isVehicleList" class="header-search-container">
+    <input 
+    type="text" 
+    class="header-search-input" 
+    placeholder="Search by name"
+    (input)="handleValueChange($event)"></span>
 <!-- user info -->
-Hi, - USERNAME -
+<!-- <span class="header-user">Hi, - USERNAME -</span> -->
