@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { globalReducer } from './state/global.reducer';
+import { provideEffects } from '@ngrx/effects';
+import { VehicleEffects } from './state/vehicle.effects';
 
 registerLocaleData(en);
 
@@ -21,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideStore({ globalState: globalReducer }),
+    provideEffects(VehicleEffects),
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),

@@ -1,15 +1,7 @@
- <!-- header  -->
-<vv-header-container 
-(onCreate)="handleCreate()"
-(onSearch)="handleSearch($event)"></vv-header-container>
- <!-- body  -->
-<ng-container *ngIf="filteredVehicles$ | async as vehicles">
-    <ng-container *ngFor="let vehicle of vehicles">
-        <vv-row
-        [vehicle]="vehicle"
-        ></vv-row> <br/>
-    </ng-container>
-</ng-container>
+<vv-vehicle-detail
+    [vehicle]="vehicle$ | async"
+    (onEdit)="handleEdit()"
+></vv-vehicle-detail>
 
 <nz-modal 
     [nzVisible]="isModalVisible$ | async" 

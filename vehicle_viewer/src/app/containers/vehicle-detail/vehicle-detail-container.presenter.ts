@@ -1,29 +1,35 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
+import { ID, Nullish } from "../../common/types";
+import { BehaviorSubject, filter, map, Observable, switchMap, tap, withLatestFrom } from "rxjs";
 import { IVehicle } from "../../models/vehicle.interface";
-import { BehaviorSubject, combineLatest, map, Observable, of, tap, withLatestFrom } from "rxjs";
-import { Car } from "../../models/car.model";
-import { Truck } from "../../models/truck.model";
-import { Colors, Nullish } from "../../common/types";
 import { Store } from "@ngrx/store";
 import { selectAllVehicles } from "../../state/vehicle.selector";
-import { createVehicle, loadVehicles, selectVehicle } from "../../state/vehicle.actions";
+import { createVehicle, loadVehicles } from "../../state/vehicle.actions";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Car } from "../../models/car.model";
+import { Truck } from "../../models/truck.model";
 
 @Injectable()
-export class VehicleListContainerPresenter {
+export class VehicleDetailContainerPresenter {
 
-    readonly vehicleType$: Observable<string>;
     readonly form: FormGroup;
-    readonly filteredVehicles$: Observable<IVehicle[]>;
-    readonly vehicles$: Observable<IVehicle[]>;
-    readonly isModalVisible$: Observable<boolean>;
-    protected readonly filterSubject: BehaviorSubject<Nullish<string>>;
-    protected readonly modalVisibleSubject: BehaviorSubject<boolean>;
 
+    get idVehicle(): Nullish<ID> {
+        return this.idVehicleSubject.value;
+    }
+    set idVehicle(value: Nullish<ID>){
+        this.idVehicleSubject.next(value);
+    }
+    readonly vehicleType$: Observable<string>;
+    readonly isModalVisible$: Observable<boolean>;
+    readonly vehicle$: Observable<Nullish<IVehicle>>;
+    protected readonly idVehicleSubject: BehaviorSubject<Nullish<ID>>;
+    protected readonly modalVisibleSubject: BehaviorSubject<boolean>;
+    protected vehicle: Nullish<IVehicle>;
     constructor(
         protected readonly store: Store,
         protected readonly fb: FormBuilder
-    ) {
+    ){
         this.form = fb.group({
             // common properties
             name: ['', Validators.required],
@@ -41,46 +47,26 @@ export class VehicleListContainerPresenter {
             maxWeightSupported: []
         });
         this.modalVisibleSubject = new BehaviorSubject<boolean>(false);
-        this.filterSubject = new BehaviorSubject<Nullish<string>>(null);
-        this.vehicles$ = this.store.select(selectAllVehicles);
-        this.isModalVisible$ = this.modalVisibleSubject.asObservable();
-        this.filteredVehicles$ = combineLatest([this.filterSubject, this.vehicles$]).pipe(
-            map(([criteria, vehicles]) => {
-                let result = vehicles;
-                if(!!criteria && criteria != "") {
-                    result = vehicles.filter(e => e.name.includes(criteria))
-                }
+        this.idVehicleSubject = new BehaviorSubject<Nullish<ID>>(null);
+        this.vehicle$ = this.idVehicleSubject.pipe(
+            filter(d => !!d),
+            tap(_ => store.dispatch(loadVehicles())),
+            withLatestFrom(store.select(selectAllVehicles)),
+            map(([id, all]) => {
+                let result = null;
+                let filtered = all.filter(e => e.idVehicle == id);
+                if(filtered.length > 0)
+                    result = filtered[0];
                 return result;
-            })
+            }),
+            tap(d => this.vehicle = d)
         );
         this.vehicleType$ = this.form.controls['vehicleType'].valueChanges;
+        this.isModalVisible$ = this.modalVisibleSubject.asObservable();
+        
     }
 
-    init() {
-        this.store.dispatch(loadVehicles());
-    }
-
-    onSelectVehicle(vehicleId: string) {
-        this.store.dispatch(selectVehicle({ selectedVehicle: vehicleId }));
-        // navigates to detail
-        // or
-        // enables edition
-    }
-
-    filterVehicles(criteria: string): void {
-        this.filterSubject.next(criteria)
-    }
-
-    handleNavigationToDetail(): void {
-        // updates state
-        // navigates to detail in read mode
-    }
-
-    handleEditVehicle(): void {
-        // updates state
-        // navigates to detail in edition mode
-    }
-
+    
     handleCreate(): void {
         this.setModalVisible(true);
         this.form.reset();
@@ -89,6 +75,12 @@ export class VehicleListContainerPresenter {
     handleCancel(): void {
         this.setModalVisible(false);
         this.form.reset();
+    }
+
+    
+    handleEdit(): void {
+        this.form.reset();
+        this.setModalVisible(true);
     }
 
     handleSubmit(): void {
@@ -130,4 +122,6 @@ export class VehicleListContainerPresenter {
     setModalVisible(isVisible: boolean): void {
         this.modalVisibleSubject.next(isVisible);
     }
+
+    
 }

@@ -6,10 +6,10 @@ import { Colors } from "../common/types";
 import { Truck } from "../models/truck.model";
 import { Car } from "../models/car.model";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class VehicleService {
 
-    mockVehicles = of([
+    mockVehicles: IVehicle[] = [
         new Car({
             idVehicle: "123",
             name: "Car1",
@@ -18,21 +18,25 @@ export class VehicleService {
             color: Colors.red,
             registrationDate: 1234
         }),
-        new Truck(
-            {
-                idVehicle: "234",
-                name: "Truck1",
-                // picture: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.hdwallpapers.in%2Fdownload%2Flamborghini_aventador_s_roadster_5k_wallpaper-HD.jpg&f=1&nofb=1&ipt=8b7007c44f3ac6da74b1905dd712084fbd5f17e71bf34549817826e14f3ab17e&ipo=images",
-                picture: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.TI8IVT5RdRz0cb41j4MPXQHaEK%26pid%3DApi&f=1&ipt=146c686635d27da47a94629389d4bbdcee1d5b5e4d54b219acbad11d3822f67b&ipo=images",
-                maxSpeed: 123,
-                color: Colors.red,
-                registrationDate: 1234
+        new Truck({
+            idVehicle: "234",
+            name: "Truck1",
+            // picture: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.hdwallpapers.in%2Fdownload%2Flamborghini_aventador_s_roadster_5k_wallpaper-HD.jpg&f=1&nofb=1&ipt=8b7007c44f3ac6da74b1905dd712084fbd5f17e71bf34549817826e14f3ab17e&ipo=images",
+            picture: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.TI8IVT5RdRz0cb41j4MPXQHaEK%26pid%3DApi&f=1&ipt=146c686635d27da47a94629389d4bbdcee1d5b5e4d54b219acbad11d3822f67b&ipo=images",
+            maxSpeed: 123,
+            color: Colors.red,
+            registrationDate: 1234
         }),
-    ]);
+    ];
 
     constructor(protected readonly http: HttpClient){}
 
     getVehicleList(): Observable<IVehicle[]> {
-        return this.mockVehicles;
+        return of(this.mockVehicles);
+    }
+
+    createVehicle(v: IVehicle): Observable<IVehicle> {
+        this.mockVehicles = [...this.mockVehicles, v];
+        return of(v);
     }
 }

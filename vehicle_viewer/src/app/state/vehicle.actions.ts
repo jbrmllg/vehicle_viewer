@@ -12,9 +12,9 @@ export const loadVehiclesSuccess = createAction(
 // Carga de vehiculos fallida
 
 // Creacion de vehiculo
-export const createVehicle = createAction("[Vehicle] - Create Vehicle");
+export const createVehicle = createAction("[Vehicle] - Create Vehicle", props<{vehicle: IVehicle}>());
 // Creacion de vehiculo exitosa
-export const createVehicleSuccess = createAction("[Vehicle] - Create Vehicle Success");
+export const createVehicleSuccess = createAction("[Vehicle] - Create Vehicle Success", props<{vehicle: IVehicle}>());
 // Creacion de vehiculo cancelada
 // Creacion de vehiculo fallida
 

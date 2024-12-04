@@ -3,9 +3,16 @@
 <!-- search input -->
  <span *ngIf="isVehicleList" class="header-search-container">
     <input 
-    type="text" 
-    class="header-search-input" 
-    placeholder="Search by name"
-    (input)="handleValueChange($event)"></span>
+        nz-input
+        type="text" 
+        class="header-search-input" 
+        placeholder="Search by name"
+        (input)="handleValueChange($event)">
+    <button 
+        nz-button 
+        nzType="primary" 
+        class="header-create-button" 
+        (click)="handleCreate()">Create</button>
+</span>
 <!-- user info -->
 <!-- <span class="header-user">Hi, - USERNAME -</span> -->

@@ -12,13 +12,19 @@ import { HeaderComponent } from "../../components/header/header.component";
 export class HeaderContainerComponent {
 
     @Output() onSearch: EventEmitter<string>;
+    @Output() onCreate: EventEmitter<void>;
     
     constructor () {
         this.onSearch = new EventEmitter<string>();
+        this.onCreate = new EventEmitter<void>();
     }
 
     handleChangeValue(evt: string): void {
         this.onSearch.emit(evt);
+    }
+
+    handleCreate(): void {
+        this.onCreate.emit();
     }
 
 

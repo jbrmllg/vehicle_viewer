@@ -1,22 +1,28 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from "@angular/core";
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { IVehicle } from "../../models/vehicle.interface";
 import { Nullish } from "../../common/types";
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { Router } from "@angular/router";
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzButtonModule } from "ng-zorro-antd/button";
 
-
+@UntilDestroy()
 @Component({
-    selector:"vv-row",
-    templateUrl: './vehicle-row.component.html',
-    styleUrl: './vehicle-row.component.scss',
-    standalone: true,
-    imports: [CommonModule, NzInputModule, NzButtonModule],
-    changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class VehicleRowComponent {
+    selector: 'vv-vehicle-detail',
+    templateUrl: './vehicle-detail.component.html',
+    styleUrl: './vehicle-detail.component.scss',
+    imports:[
+      CommonModule, 
+      NzGridModule,
+      NzButtonModule,
 
+    ],
+    providers:[],
+    standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush
+  })
+  export class VehicleDetailComponent {
+      
     @Input() get vehicle(): Nullish<IVehicle> {
         return this._vehicle;
     }
@@ -24,20 +30,21 @@ export class VehicleRowComponent {
         this._vehicle = value;
         if(!!value) this.extractKeys(value);
     }
-
+    @Output() onEdit: EventEmitter<void>;
+        
     vehicleProperties: string[];
     
     // list of properties that will not display
     readonly hiddenProperties = ['idVehicle', 'picture'];
     protected _vehicle: Nullish<IVehicle>;
 
-    constructor(private router: Router) {
+    constructor() {
         this.vehicleProperties = [];
-
+        this.onEdit = new EventEmitter<void>();
     }
 
-    navigateToDetail(): void {
-        this.router.navigate(['/detail/', this.vehicle?.idVehicle]);
+    onEditVehicle(): void {
+        this.onEdit.emit();
     }
 
     protected extractKeys(paramVehicle: IVehicle): void {
@@ -46,3 +53,6 @@ export class VehicleRowComponent {
         );
     }
 }
+  
+
+  

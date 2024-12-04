@@ -20,8 +20,8 @@ export enum Colors {
 // Represents the available fuels.
 // This may be retrieved from backend.
 export enum Fuels {
-    diesel,
-    gasoline,
-    hybrid,
-    electric,
+    diesel = "Diesel",
+    gasoline = "Gasoline",
+    hybrid = "Hybrid",
+    electric = "Electric",
 }
