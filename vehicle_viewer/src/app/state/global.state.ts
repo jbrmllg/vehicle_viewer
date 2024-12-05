@@ -4,11 +4,11 @@ import { IVehicle } from "../models/vehicle.interface";
 export interface GlobalState {
     vehicles: IVehicle[];
     selectedVehicle: Nullish<ID>;
-    user: string;
+    user: Nullish<string>;
 }
 
 export const initialState: GlobalState = {
     vehicles: [],
     selectedVehicle: null,
-    user: ""
+    user: null
 };

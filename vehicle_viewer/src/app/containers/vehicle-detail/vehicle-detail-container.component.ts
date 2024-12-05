@@ -9,12 +9,13 @@ import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzSwitchModule } from "ng-zorro-antd/switch";
 import { NzUploadChangeParam, NzUploadModule } from "ng-zorro-antd/upload";
 import { VehicleDetailComponent } from "../../components/vehicle-detail/vehicle-detail.component";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { VehicleDetailContainerPresenter } from "./vehicle-detail-container.presenter";
 import { IVehicle } from "../../models/vehicle.interface";
 import { Nullish } from "../../common/types";
 import { Observable } from "rxjs";
 import { availableColors, availableFuelTypes, availableVehicleTypes } from "../../common/static-data";
+import { NzButtonModule } from "ng-zorro-antd/button";
 
 
 @UntilDestroy()
@@ -31,6 +32,7 @@ import { availableColors, availableFuelTypes, availableVehicleTypes } from "../.
       NzDatePickerModule,
       NzSwitchModule,
       NzUploadModule,
+      NzButtonModule,
       VehicleDetailComponent,
     ],
     providers:[VehicleDetailContainerPresenter],
@@ -49,7 +51,8 @@ import { availableColors, availableFuelTypes, availableVehicleTypes } from "../.
 
     constructor(
         protected presenter: VehicleDetailContainerPresenter,
-        protected route: ActivatedRoute
+        protected route: ActivatedRoute,
+        protected router: Router
     ) {
         this.vehicle$ = presenter.vehicle$;
         this.form = presenter.form;
@@ -79,5 +82,8 @@ import { availableColors, availableFuelTypes, availableVehicleTypes } from "../.
     }
     handleEdit(): void {
         this.presenter.handleEdit();
+    }
+    onBack(): void{
+        this.router.navigate(['/']);
     }
   }
