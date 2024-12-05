@@ -79,8 +79,22 @@ export class VehicleDetailContainerPresenter {
 
     
     handleEdit(): void {
-        this.form.reset();
-        this.setModalVisible(true);
+        if(!!this.vehicle) {
+            let type = this.resolveVehicleType();
+            this.form.reset({
+                ...this.vehicle,
+                // extra properties
+                vehicleType: type,
+                // car props
+                hasAirbag: type == "Car" ? this.vehicle['hasAirbag'] : false,
+                fuelType: type == "Car" ? this.vehicle['fuelType'] : null,
+                // truck props
+                canAttachTrailer: type == "Truck" ? this.vehicle['canAttachTrailer'] : false,
+                maxWeightSupported: type == "Truck" ? this.vehicle['maxWeightSupported'] : null,
+            });
+            
+            this.setModalVisible(true);
+        }
     }
 
     handleSubmit(): void {
@@ -121,6 +135,10 @@ export class VehicleDetailContainerPresenter {
 
     setModalVisible(isVisible: boolean): void {
         this.modalVisibleSubject.next(isVisible);
+    }
+
+    protected resolveVehicleType(): string {
+        return this.vehicle instanceof Car ? "Car" : "Truck";
     }
 
     

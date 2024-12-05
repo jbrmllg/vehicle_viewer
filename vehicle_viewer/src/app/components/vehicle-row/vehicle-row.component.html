@@ -1,11 +1,25 @@
 <div class="vehicle-row-container">
     <div *ngIf="vehicle" class="row">
         <span class="cell">
-            <button nz-button nztype="primary" (click)="navigateToDetail()"> Edit</button>
+            <button nz-button nztype="primary" (click)="navigateToDetail()">View Detail</button>
         </span>
         <img class="row-image" src="{{vehicle?.picture}}"/>
-        <span *ngFor="let key of vehicleProperties" class="cell">
+        <!-- <span *ngFor="let key of vehicleProperties" class="cell">
             <ng-container *ngIf="vehicle[key]">{{ vehicle[key] }}</ng-container>
-        </span>
+        </span> -->
+            <span >{{ vehicle.name }}</span>
+            <span >{{ vehicle.maxSpeed }} km/h</span>
+            <span >{{ vehicle.color }}</span>
+            <span >{{ vehicle.registrationDate }} days</span>
+            <ng-container *ngIf="isCar; else isTruck">
+                <span >Has airbag: {{ vehicle['hasAirbag'] }}</span>
+                <span >{{ vehicle['fuelType'] ?? '--'}}</span>
+            </ng-container>
+            <ng-template #isTruck>
+                <span >Can attach trailer: {{ vehicle['canAttachTrailer'] }}</span>
+                <span >{{ vehicle['maxWeightSupported'] ?? '--'}} kg</span>
+            </ng-template>
+
+            
     </div>
 </div>

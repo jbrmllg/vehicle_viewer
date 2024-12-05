@@ -1,3 +1,6 @@
+import { Car } from "../models/car.model";
+import { Truck } from "../models/truck.model";
+
 export type Nullable<T> = T | null ;
 export type Nullish<T> = T | null | undefined;
 export type ID = string | number;
@@ -10,11 +13,11 @@ export enum Roles {
 // Represents the available colors.
 // This may be retrieved from backend.
 export enum Colors {
-    red = "red",
-    blue = "blue",
-    green = "green",
-    yellow = "yellow",
-    white = "white"
+    red = "Red",
+    blue = "Blue",
+    green = "Green",
+    yellow = "Yellow",
+    white = "White"
 }
 
 // Represents the available fuels.
@@ -25,3 +28,6 @@ export enum Fuels {
     hybrid = "Hybrid",
     electric = "Electric",
 }
+
+
+export type Vehicle = Truck | Car;

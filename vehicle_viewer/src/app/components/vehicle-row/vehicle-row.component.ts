@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { IVehicle } from "../../models/vehicle.interface";
-import { Nullish } from "../../common/types";
+import { Nullish, Vehicle } from "../../common/types";
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { Router } from "@angular/router";
+import { Car } from "../../models/car.model";
 
 
 @Component({
@@ -22,27 +23,15 @@ export class VehicleRowComponent {
     }
     set vehicle(value: Nullish<IVehicle>) {
         this._vehicle = value;
-        if(!!value) this.extractKeys(value);
+        this.isCar = value instanceof Car;
     }
-
-    vehicleProperties: string[];
-    
-    // list of properties that will not display
-    readonly hiddenProperties = ['idVehicle', 'picture'];
+    isCar = false;
     protected _vehicle: Nullish<IVehicle>;
 
-    constructor(private router: Router) {
-        this.vehicleProperties = [];
-
-    }
+    constructor(private router: Router) {}
 
     navigateToDetail(): void {
         this.router.navigate(['/detail/', this.vehicle?.idVehicle]);
     }
 
-    protected extractKeys(paramVehicle: IVehicle): void {
-        this.vehicleProperties = Object.keys(paramVehicle).filter(
-            k => !this.hiddenProperties.includes(k)
-        );
-    }
 }
