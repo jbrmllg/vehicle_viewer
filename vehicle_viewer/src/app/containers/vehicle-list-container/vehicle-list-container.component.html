@@ -11,15 +11,10 @@
     </ng-container>
 </ng-container>
 
-<nz-modal 
-    [nzVisible]="isModalVisible$ | async" 
-    nzTitle="Create Vehicle" 
-    [nzFooter]="modalFooter" 
-    (nzOnCancel)="handleCancel()">
-    <ng-container *nzModalContent>
-      <vv-vehicle-form></vv-vehicle-form>
-    </ng-container>
-</nz-modal>
+<vv-vehicle-form-modal
+    [visible]="isModalVisible$ |async"
+    (onCloseModal)="handleCancel()"
+></vv-vehicle-form-modal>
 
 
 <ng-template #modalFooter>

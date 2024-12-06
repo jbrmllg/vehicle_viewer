@@ -1,10 +1,10 @@
 import { CommonModule } from "@angular/common";
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from "@angular/core";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { NzButtonModule } from "ng-zorro-antd/button";
 import { NzModalModule } from "ng-zorro-antd/modal";
 import { VehicleFormComponent } from "../vehicle-form/vehicle-form.component";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, tap } from "rxjs";
 import { ID, Nullish } from "../../common/types";
 
 @UntilDestroy()
@@ -33,9 +33,9 @@ import { ID, Nullish } from "../../common/types";
     set idVehicle(value: Nullish<ID>) {
       this._idVehicle = value;
       if(!!value) {
-        this.titleSubject.next(this.createTitle);
-      } else {
         this.titleSubject.next(this.editTitle);
+      } else {
+        this.titleSubject.next(this.createTitle);
       }
     }
     @Input() get visible(): Nullish<boolean> { 
@@ -44,7 +44,7 @@ import { ID, Nullish } from "../../common/types";
     set visible(value: Nullish<boolean>){
       this.visibleSubject.next(value ?? false);
     }
-
+    @Output() onCloseModal: EventEmitter<void>;
     modalTitle$: Observable<Nullish<string>>;
     isVisible$: Observable<boolean>;
 
@@ -53,14 +53,18 @@ import { ID, Nullish } from "../../common/types";
     protected _idVehicle:Nullish<ID>;
     
     constructor() {
+        this.onCloseModal = new EventEmitter<void>();
         this.titleSubject = new BehaviorSubject<Nullish<string>>("");
         this.visibleSubject = new BehaviorSubject<boolean>(false);
-        this.isVisible$ = this.visibleSubject.pipe(untilDestroyed(this));
+        this.isVisible$ = this.visibleSubject.pipe(
+          untilDestroyed(this)
+        );
         this.modalTitle$ = this.titleSubject.pipe(untilDestroyed(this));
     }
 
     handleCancel(): void {
       this.visibleSubject.next(false);
+      this.onCloseModal.emit();
     }
 
   }

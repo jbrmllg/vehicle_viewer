@@ -12,8 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
-import { VehicleFormComponent } from "../../components/vehicle-form/vehicle-form.component";
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/vehicle-form-modal.component";
 
 @UntilDestroy()
 @Component({
@@ -31,15 +31,13 @@ import { VehicleFormComponent } from "../../components/vehicle-form/vehicle-form
       NzDatePickerModule,
       NzSwitchModule,
       NzUploadModule,
-      VehicleFormComponent
+      VehicleFormModalComponent
     ],
     providers:[VehicleListContainerPresenter],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush
   })
-  export class VehicleListContainerComponent implements OnInit, OnDestroy{
-
-
+  export class VehicleListContainerComponent implements OnInit {
 
     // readonly submitDisabled$: Observable<boolean>;
     readonly isModalVisible$: Observable<boolean>;
@@ -55,9 +53,6 @@ import { VehicleFormComponent } from "../../components/vehicle-form/vehicle-form
       this.presenter.init();
     }
 
-    ngOnDestroy(): void {
-    }
-
     handleSearch(evt: string): void {
       this.presenter.filterVehicles(evt);
     }
@@ -70,12 +65,5 @@ import { VehicleFormComponent } from "../../components/vehicle-form/vehicle-form
       this.presenter.handleCancel();
     }
 
-    handleSubmit(): void {
-      console.log(">>> SUBMIT");
-    }
-
-    handleFileUpload(info: NzUploadChangeParam): void {
-      // ...
-    }
   }
 

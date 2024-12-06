@@ -6,4 +6,5 @@
 <vv-vehicle-form-modal
   [idVehicle]="idVehicle$ | async"
   [visible]="isModalVisible$ |async"
+  (onCloseModal)="handleCancel()"
 ></vv-vehicle-form-modal>

@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { VehicleDetailContainerPresenter } from "./vehicle-detail-container.presenter";
 import { IVehicle } from "../../models/vehicle.interface";
 import { ID, Nullish } from "../../common/types";
-import { map, Observable } from "rxjs";
+import { map, Observable, tap } from "rxjs";
 import { availableColors, availableFuelTypes, availableVehicleTypes } from "../../common/static-data";
 import { NzButtonModule } from "ng-zorro-antd/button";
 import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/vehicle-form-modal.component";
@@ -38,8 +38,8 @@ import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/v
     providers:[VehicleDetailContainerPresenter],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush
-  })
-  export class VehicleDetailContainerComponent implements OnInit {
+})
+export class VehicleDetailContainerComponent {
     availableColors = availableColors;
     availableVehicleTypes = availableVehicleTypes;
     availableFuelTypes = availableFuelTypes;
@@ -53,6 +53,7 @@ import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/v
         protected route: ActivatedRoute,
         protected router: Router
     ) {
+        this.presenter.idVehicle = this.route.snapshot.paramMap.get('idVehicle');
         this.vehicle$ = presenter.vehicle$.pipe(
             untilDestroyed(this)
         );
@@ -60,14 +61,10 @@ import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/v
             untilDestroyed(this)
         );
         this.idVehicle$ = this.vehicle$.pipe( 
-            map(d => d?.idVehicle)
+            map(d => d?.idVehicle),
         );
     }
 
-    ngOnInit(): void {
-        this.presenter.idVehicle = this.route.snapshot.paramMap.get('idVehicle');
-    }
-    
     handleCancel(): void {
         this.presenter.handleCancel();
     }
@@ -78,4 +75,4 @@ import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/v
     onBack(): void{
         this.router.navigate(['/']);
     }
-  }
+}

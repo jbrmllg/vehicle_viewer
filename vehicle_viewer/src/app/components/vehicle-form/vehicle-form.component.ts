@@ -118,8 +118,11 @@ import { selectAllVehicles } from "../../state/vehicle.selector";
                 else
                     this.handleCreate();
                 return result;
-            })
+            }), 
+            untilDestroyed(this)
         );
+        this.vehicle$.subscribe();
+
     }
 
     init(): void {
