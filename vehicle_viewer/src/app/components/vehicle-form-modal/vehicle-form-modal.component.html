@@ -1,0 +1,13 @@
+
+<nz-modal 
+    [nzVisible]="isVisible$ | async" 
+    nzTitle="{{modalTitle$ | async}}" 
+    (nzOnCancel)="handleCancel()"
+    [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <vv-vehicle-form
+        [idVehicle]="idVehicle"
+        (onCloseModal)="handleCancel()"
+      ></vv-vehicle-form>
+    </ng-container>
+</nz-modal>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { HeaderContainerComponent } from "../header-container/header-container.component";
 import { IVehicle } from "../../models/vehicle.interface";
 import { Observable } from "rxjs";
@@ -7,14 +7,13 @@ import { VehicleListContainerPresenter } from "./vehicle-list-container.presente
 import { CommonModule } from "@angular/common";
 import { VehicleRowComponent } from "../../components/vehicle-row/vehicle-row.component";
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { FormGroup } from "@angular/forms";
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
-import { availableColors, availableFuelTypes, availableVehicleTypes } from "../../common/static-data";
+import { VehicleFormComponent } from "../../components/vehicle-form/vehicle-form.component";
 
 @UntilDestroy()
 @Component({
@@ -31,32 +30,32 @@ import { availableColors, availableFuelTypes, availableVehicleTypes } from "../.
       NzSelectModule,
       NzDatePickerModule,
       NzSwitchModule,
-      NzUploadModule
+      NzUploadModule,
+      VehicleFormComponent
     ],
     providers:[VehicleListContainerPresenter],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush
   })
-  export class VehicleListContainerComponent implements OnInit {
+  export class VehicleListContainerComponent implements OnInit, OnDestroy{
 
-    availableColors = availableColors;
-    availableVehicleTypes = availableVehicleTypes;
-    availableFuelTypes = availableFuelTypes;
 
-    readonly vehicleType$: Observable<string>;
-    readonly form: FormGroup;
+
+    // readonly submitDisabled$: Observable<boolean>;
     readonly isModalVisible$: Observable<boolean>;
     readonly filteredVehicles$: Observable<IVehicle[]>;
 
     constructor(protected readonly presenter: VehicleListContainerPresenter){
+      // this.submitDisabled$ = presenter.submitDisabled$.pipe(untilDestroyed(this));
       this.filteredVehicles$ = presenter.filteredVehicles$.pipe(untilDestroyed(this));
       this.isModalVisible$ = presenter.isModalVisible$.pipe(untilDestroyed(this))
-      this.form = presenter.form;
-      this.vehicleType$ = presenter.vehicleType$.pipe(untilDestroyed(this));
     }
 
     ngOnInit(): void {
       this.presenter.init();
+    }
+
+    ngOnDestroy(): void {
     }
 
     handleSearch(evt: string): void {
@@ -72,12 +71,7 @@ import { availableColors, availableFuelTypes, availableVehicleTypes } from "../.
     }
 
     handleSubmit(): void {
-      this.presenter.handleSubmit();
-    }
-
-    onDateChange(evt: Event) : void {
-      // converts to number and saves
-      // ...
+      console.log(">>> SUBMIT");
     }
 
     handleFileUpload(info: NzUploadChangeParam): void {
