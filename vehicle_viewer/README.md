@@ -1,59 +1,50 @@
-# VehicleViewer
+# Vehicle Viewer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+1.Commands
+2.Architecture
+3.Mocked data
+4.Improvements
+5.Other issues
 
-## Development server
+1.Commands
+To start the project run these commands in the project folder:
+npm i
+npm start
+Counting on NodeJS is already installed and repository is downloaded.
 
-To start a local development server, run:
+To build for production
+npm build --prod
 
-```bash
-ng serve
-```
+To run tests
+npm test
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+2.Architecture
+The project implements Model-View-Presenter pattern.
+In this pattern, complex logic is located in presenters classes, injected in components that contains simpler components.
 
-## Code scaffolding
+For state management, Redux is implemented.
+This design pattern defines actions that user can dispatch.
+These actions may execute effects, which communicates with backend.
+After effect is done, or in case there are no effects related to the current action, reducers are executed. These are small pieces of code that perform specific operations in the state.
+All changes in the state are retrieved by selectors, which transfers data to the components and services.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+3.Mocked data
+Some of the data used in this app has been hardcoded. This means is being written while it is supposed to be retrieved from back-end or configuration files.
 
-```bash
-ng generate component component-name
-```
+The data that shall be transfered from back-end is:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- User roles (with a classic login view)
+- Vehicles list
+- Vehicle detail
+  The following data may be retrieved from back-end, but it may also come in a config-file:
+- Fuel list
+- Colors list
+- Vehicle types list
 
-```bash
-ng generate --help
-```
+  4.Improvements
+  UI/UX could be improved, since this app was created keeping it in its simplest way. It would be nice to define a two to five colors theme.
+  Location files may be added, creating a file for each supported language (en.json, fr.json, es.json...), the language could be switched by enabling a button, may be inside a burger-menu.
+  Environment files could be enabled.
+  Test could cover html templates.
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+  5.Other issues

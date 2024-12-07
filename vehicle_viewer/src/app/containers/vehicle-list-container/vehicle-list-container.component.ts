@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { HeaderContainerComponent } from "../header-container/header-container.component";
 import { IVehicle } from "../../models/vehicle.interface";
 import { Observable } from "rxjs";
@@ -14,6 +14,8 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/vehicle-form-modal.component";
+import { Router } from "@angular/router";
+import { ID } from "../../common/types";
 
 @UntilDestroy()
 @Component({
@@ -43,14 +45,19 @@ import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/v
     readonly isModalVisible$: Observable<boolean>;
     readonly filteredVehicles$: Observable<IVehicle[]>;
 
-    constructor(protected readonly presenter: VehicleListContainerPresenter){
-      // this.submitDisabled$ = presenter.submitDisabled$.pipe(untilDestroyed(this));
+    constructor(protected readonly presenter: VehicleListContainerPresenter,
+        protected readonly router: Router
+    ){
       this.filteredVehicles$ = presenter.filteredVehicles$.pipe(untilDestroyed(this));
       this.isModalVisible$ = presenter.isModalVisible$.pipe(untilDestroyed(this))
     }
 
     ngOnInit(): void {
       this.presenter.init();
+    }
+
+    navigateToDetail(idVehicle: ID): void {
+        this.router.navigate(['/detail/', idVehicle]);
     }
 
     handleSearch(evt: string): void {

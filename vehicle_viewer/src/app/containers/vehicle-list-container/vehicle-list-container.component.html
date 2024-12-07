@@ -7,6 +7,8 @@
     <ng-container *ngFor="let vehicle of vehicles">
         <vv-row
         [vehicle]="vehicle"
+        [buttonStr]="'View detail'"
+        (onClick)="navigateToDetail($event)"
         ></vv-row> <br/>
     </ng-container>
 </ng-container>

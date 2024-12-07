@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { clearRole, setRole } from "../../state/user.actions";
 import { Router } from "@angular/router";
+import { Roles } from "../../common/types";
 
 @Injectable()
 export class LoginContainerPresenter {
@@ -16,7 +17,7 @@ export class LoginContainerPresenter {
     }
 
     setRole(role: string): void {
-        this.store.dispatch(setRole({ user: role }));
+        this.store.dispatch(setRole({ user: role as Roles }));
         this.router.navigate(['']);
     }
 

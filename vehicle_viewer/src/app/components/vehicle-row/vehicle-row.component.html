@@ -1,7 +1,7 @@
 <div class="vehicle-row-container">
     <div *ngIf="vehicle" class="row">
-        <span class="cell">
-            <button nz-button nztype="primary" (click)="navigateToDetail()">View Detail</button>
+        <span *ngIf="userRole == 'Admin'" class="cell">
+            <button nz-button nztype="primary" (click)="clickRow()">{{ buttonStr }}</button>
         </span>
         <img class="row-image" src="{{vehicle?.picture}}"/>
         <!-- <span *ngFor="let key of vehicleProperties" class="cell">

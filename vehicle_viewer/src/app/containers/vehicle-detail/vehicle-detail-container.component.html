@@ -1,8 +1,13 @@
 <button nz-button nzType="primary" (click)="onBack()">Back</button>
-<vv-vehicle-detail
+<!-- <vv-vehicle-detail
     [vehicle]="vehicle$ | async"
     (onEdit)="handleEdit()"
-></vv-vehicle-detail>
+></vv-vehicle-detail> -->
+<vv-row
+  [vehicle]="vehicle$ | async"
+  [buttonStr]="'Edit Vehicle'"
+  (onClick)="handleEdit()"
+></vv-row>
 <vv-vehicle-form-modal
   [idVehicle]="idVehicle$ | async"
   [visible]="isModalVisible$ |async"

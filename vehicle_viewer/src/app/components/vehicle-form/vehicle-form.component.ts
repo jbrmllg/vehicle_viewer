@@ -9,8 +9,8 @@ import { NzGridModule } from "ng-zorro-antd/grid";
 import { NzModalModule } from "ng-zorro-antd/modal";
 import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzSwitchModule } from "ng-zorro-antd/switch";
-import { NzUploadModule } from "ng-zorro-antd/upload";
-import { Observable, filter, tap, map, BehaviorSubject, withLatestFrom } from "rxjs";
+import { NzUploadFile, NzUploadModule, NzUploadXHRArgs } from "ng-zorro-antd/upload";
+import { Observable, filter, tap, map, BehaviorSubject, withLatestFrom, startWith, of } from "rxjs";
 import { ID, Nullish } from "../../common/types";
 import { Car } from "../../models/car.model";
 import { Truck } from "../../models/truck.model";
@@ -95,7 +95,8 @@ import { selectAllVehicles } from "../../state/vehicle.selector";
         });
         this.submitDisabled$ = this.form.valueChanges.pipe(
             untilDestroyed(this),
-            map(_ => this.form.invalid)
+            map(_ => this.form.invalid),
+            startWith(true)
         );
         this.vehicleType$ = this.form.controls['vehicleType'].valueChanges;
         this.transformDate$ = this.form.controls['registrationDate'].valueChanges.pipe(
@@ -200,6 +201,7 @@ import { selectAllVehicles } from "../../state/vehicle.selector";
 
     }
 
+
     protected updateRegistrationDate(pDate: Date): void {
         this.form.patchValue({
             registrationDays: new Date().getTime() - pDate.getTime()
@@ -209,4 +211,61 @@ import { selectAllVehicles } from "../../state/vehicle.selector";
     protected resolveVehicleType(): string {
         return this.vehicle instanceof Car ? "Car" : "Truck";
     }
+
+
+
+
+    // Array para guardar las URLs de las imágenes cargadas
+  uploadedImages: string[] = [];
+
+// Manejar la subida personalizada
+handleUpload = (item: NzUploadXHRArgs) => {
+
+
+    const file = item.file.originFileObj as File;
+
+    // Leer el archivo como DataURL
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   // Guardar la URL generada en memoria
+    //   const imageUrl = reader.result as string;
+    //   this.uploadedImages.push(imageUrl);
+
+    //   // Simular una subida exitosa
+    //   setTimeout(() => {
+    //     if(!!item.onSuccess)
+    //         item.onSuccess(null, item.file, null);
+    //   }, 1000); // Mockear un retraso
+    // };
+
+    // reader.readAsDataURL(file);
+return of("stringUpload").subscribe();
+
+  };
+
+  // Previsualizar la imagen cargada
+  previewFile = (file: NzUploadFile) => {
+    return of(file).pipe(map(d => 
+        {
+            console.log(">>> preview observable");
+            return 'preview string';
+        }
+    ));
+    // return new Promise<string>((resolve, reject) => {
+    //   const reader = new FileReader();
+    //   reader.onload = (e) => resolve(e.target!.result as string);
+    //   reader.onerror = (e) => reject(e);
+    // //   reader.readAsDataURL(file);
+    // });
+  };
+
+
+
+
+
+
+
+
+
+
 }

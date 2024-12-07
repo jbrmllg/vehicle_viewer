@@ -8,11 +8,15 @@
         class="header-search-input" 
         placeholder="Search by name"
         (input)="handleValueChange($event)">
-    <button 
-        nz-button 
-        nzType="primary" 
-        class="header-create-button" 
-        (click)="handleCreate()">Create</button>
+    
+    <ng-container *ngIf="userRole=='Admin'"> 
+        <button 
+            nz-button 
+            nzType="primary" 
+            class="header-create-button" 
+            
+            (click)="handleCreate()">Create</button>
+        </ng-container>
 </span>
 <!-- user info -->
 <!-- <span class="header-user">Hi, - USERNAME -</span> -->

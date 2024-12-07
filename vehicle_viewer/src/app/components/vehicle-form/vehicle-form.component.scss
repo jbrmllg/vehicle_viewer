@@ -3,4 +3,9 @@
     display: flex;
     justify-content: flex-end; /* Alinea los botones a la derecha */
     gap: 10px; /* Espaciado entre botones */
-  }
+}
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

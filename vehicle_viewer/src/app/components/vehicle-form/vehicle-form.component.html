@@ -14,6 +14,18 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="6" nzFor="picture">Picture</nz-form-label>
       <nz-form-control [nzSpan]="18">
+        <nz-upload
+          nzAction="mock"
+          [nzCustomRequest]="handleUpload"
+          [nzShowUploadList]="true"
+          [nzPreviewFile]="previewFile"
+          [nzListType]="'picture-card'"
+        >
+          <div>
+            <i nz-icon nzType="plus"></i>
+            <div style="margin-top: 8px">Upload Picture</div>
+          </div>
+        </nz-upload>
         <!-- <nz-upload
         [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">        
         (nzChange)="handleFileUpload($event)"
@@ -30,6 +42,9 @@
         <nz-form-label [nzSpan]="6" nzFor="maxSpeed">Max Speed</nz-form-label>
         <nz-form-control [nzSpan]="18">
           <input nz-input type="number" formControlName="maxSpeed" id="maxSpeed" placeholder="Enter speed (Km/h)" />
+          <div *ngIf="form.get('maxSpeed')?.invalid && form.get('maxSpeed')?.touched" class="error">
+            Minimun speed is 80 km/h
+          </div>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

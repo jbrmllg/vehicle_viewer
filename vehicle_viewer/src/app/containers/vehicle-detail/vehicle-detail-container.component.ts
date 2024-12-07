@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ChangeDetectionStrategy, OnInit } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { NzDatePickerModule } from "ng-zorro-antd/date-picker";
@@ -7,15 +7,17 @@ import { NzFormModule } from "ng-zorro-antd/form";
 import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzSwitchModule } from "ng-zorro-antd/switch";
 import { NzUploadModule } from "ng-zorro-antd/upload";
-import { VehicleDetailComponent } from "../../components/vehicle-detail/vehicle-detail.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { VehicleDetailContainerPresenter } from "./vehicle-detail-container.presenter";
 import { IVehicle } from "../../models/vehicle.interface";
-import { ID, Nullish } from "../../common/types";
-import { map, Observable, tap } from "rxjs";
+import { ID, Nullish, Roles } from "../../common/types";
+import { map, Observable, take, tap } from "rxjs";
 import { availableColors, availableFuelTypes, availableVehicleTypes } from "../../common/static-data";
 import { NzButtonModule } from "ng-zorro-antd/button";
 import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/vehicle-form-modal.component";
+import { VehicleRowComponent } from "../../components/vehicle-row/vehicle-row.component";
+import { Store } from "@ngrx/store";
+import { selectUserRole } from "../../state/user.selector";
 
 
 @UntilDestroy()
@@ -32,7 +34,7 @@ import { VehicleFormModalComponent } from "../../components/vehicle-form-modal/v
     NzSwitchModule,
     NzUploadModule,
     NzButtonModule,
-    VehicleDetailComponent,
+    VehicleRowComponent,
     VehicleFormModalComponent
 ],
     providers:[VehicleDetailContainerPresenter],
@@ -51,8 +53,16 @@ export class VehicleDetailContainerComponent {
     constructor(
         protected presenter: VehicleDetailContainerPresenter,
         protected route: ActivatedRoute,
-        protected router: Router
+        protected router: Router,
+        protected store: Store
     ) {
+        this.store.select(selectUserRole).pipe(
+            take(1),
+            tap(d => {
+                if(!!!d || d != Roles.admin)
+                    this.router.navigate(['/login'])
+            })
+        ).subscribe();
         this.presenter.idVehicle = this.route.snapshot.paramMap.get('idVehicle');
         this.vehicle$ = presenter.vehicle$.pipe(
             untilDestroyed(this)

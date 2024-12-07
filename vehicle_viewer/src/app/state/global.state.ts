@@ -1,10 +1,10 @@
-import { ID, Nullish } from "../common/types";
+import { ID, Nullish, Roles } from "../common/types";
 import { IVehicle } from "../models/vehicle.interface";
 
 export interface GlobalState {
     vehicles: IVehicle[];
     selectedVehicle: Nullish<ID>;
-    user: Nullish<string>;
+    user: Nullish<Roles>;
 }
 
 export const initialState: GlobalState = {
