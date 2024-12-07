@@ -160,10 +160,11 @@ import { selectAllVehicles } from "../../state/vehicle.selector";
 
     handleSubmit(): void {
         if(this.form.valid){
+            let tmpId = !!this.vehicle ? this.vehicle.idVehicle : `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
             let vehicle : Nullish<IVehicle> = null;
             if(this.form.controls['vehicleType'].value == 'Car')
                 vehicle = new Car({
-                    idVehicle: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                    idVehicle: tmpId,
                     name: this.form.controls['name'].value,
                     picture: this.form.controls['picture'].value,
                     maxSpeed: this.form.controls['maxSpeed'].value,
@@ -175,7 +176,7 @@ import { selectAllVehicles } from "../../state/vehicle.selector";
                 });
             if(this.form.controls['vehicleType'].value == 'Truck')
                 vehicle = new Truck({
-                    idVehicle: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                    idVehicle: tmpId,
                     name: this.form.controls['name'].value,
                     picture: this.form.controls['picture'].value,
                     maxSpeed: this.form.controls['maxSpeed'].value,

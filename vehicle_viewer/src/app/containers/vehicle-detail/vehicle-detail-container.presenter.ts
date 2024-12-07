@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ID, Nullish } from "../../common/types";
-import { BehaviorSubject, filter, map, Observable, tap, withLatestFrom } from "rxjs";
+import { BehaviorSubject, combineLatest, filter, map, Observable, tap, withLatestFrom } from "rxjs";
 import { IVehicle } from "../../models/vehicle.interface";
 import { Store } from "@ngrx/store";
 import { selectAllVehicles } from "../../state/vehicle.selector";
@@ -26,10 +26,9 @@ export class VehicleDetailContainerPresenter {
     ){
         this.modalVisibleSubject = new BehaviorSubject<boolean>(false);
         this.idVehicleSubject = new BehaviorSubject<Nullish<ID>>(null);
-        this.vehicle$ = this.idVehicleSubject.pipe(
+        this.vehicle$ = combineLatest([this.idVehicleSubject,store.select(selectAllVehicles)]).pipe(
             filter(d => !!d),
             tap(_ => store.dispatch(loadVehicles())),
-            withLatestFrom(store.select(selectAllVehicles)),
             map(([id, all]) => {
                 let result = null;
                 let filtered = all.filter(e => e.idVehicle == id);

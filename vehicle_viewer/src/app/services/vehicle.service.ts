@@ -43,4 +43,10 @@ export class VehicleService {
         this.mockVehicles = [...this.mockVehicles, v];
         return of(v);
     }
+    updateVehicle(v: IVehicle): Observable<IVehicle> {
+        this.mockVehicles = [...this.mockVehicles];
+        let index = this.mockVehicles.findIndex(e => v.idVehicle === e.idVehicle);
+        this.mockVehicles[index] = {...v};
+        return of(v);
+    }
 }

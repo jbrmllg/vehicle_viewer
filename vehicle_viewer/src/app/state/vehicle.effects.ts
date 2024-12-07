@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { createVehicle, createVehicleSuccess, loadVehicles, loadVehiclesSuccess } from "./vehicle.actions";
+import { createVehicle, createVehicleSuccess, editVehicle, editVehicleSuccess, loadVehicles, loadVehiclesSuccess } from "./vehicle.actions";
 import { VehicleService } from "../services/vehicle.service";
 import { map, Observable, switchMap, tap } from "rxjs";
 import { IVehicle } from "../models/vehicle.interface";
@@ -9,6 +9,7 @@ import { IVehicle } from "../models/vehicle.interface";
 export class VehicleEffects {
     loadVehicles$: Observable<{vehicles: IVehicle[]}>;
     createVehicle$: Observable<{vehicle: IVehicle}>;
+    editVehicle$: Observable<{vehicle: IVehicle}>;
 
     constructor(
         protected readonly actions$: Actions,
@@ -32,6 +33,15 @@ export class VehicleEffects {
                     this.service.createVehicle(v.vehicle)
                 ),
                 map(vehicle => createVehicleSuccess({ vehicle })),
+            )
+        );
+
+        this.editVehicle$ = createEffect(() => 
+            this.actions$.pipe(
+                ofType(editVehicle),
+                switchMap((v) => 
+                    this.service.updateVehicle(v.vehicle)),
+                map(vehicle => editVehicleSuccess({ vehicle })),
             )
         );
     }

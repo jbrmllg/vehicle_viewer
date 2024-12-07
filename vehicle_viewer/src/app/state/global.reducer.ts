@@ -1,7 +1,8 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialState } from "./global.state";
-import { createVehicle, createVehicleSuccess, loadVehicles, loadVehiclesSuccess } from "./vehicle.actions";
+import { createVehicle, createVehicleSuccess, editVehicle, editVehicleSuccess, loadVehicles, loadVehiclesSuccess } from "./vehicle.actions";
 import { clearRole, setRole } from "./user.actions";
+import { IVehicle } from "../models/vehicle.interface";
 
 export const globalReducer = createReducer(
     initialState,
@@ -18,6 +19,14 @@ export const globalReducer = createReducer(
         ...state, 
         vehicles: [...state.vehicles, vehicle]
     })),
+    on(editVehicle, (state, { vehicle }) => ({
+        ...state,
+        vehicles: updateElement(vehicle, state.vehicles)
+    })),
+    on(editVehicleSuccess, (state, { vehicle }) => ({
+        ...state,
+        vehicles: updateElement(vehicle, state.vehicles)
+    })),
     // -- user reducers -- 
     on(setRole, (state, { user }) => ({
         ...state,
@@ -27,6 +36,14 @@ export const globalReducer = createReducer(
         ...state,
         user: null
     }))
-
-
 )
+
+export function updateElement(element: IVehicle, list: IVehicle[]): IVehicle []
+{
+    let result: IVehicle [] = [...list];
+    let index = list.findIndex(e => element.idVehicle === e.idVehicle);
+    if(index >= 0){
+        result[index] = {...element};
+    }
+    return result;
+}
